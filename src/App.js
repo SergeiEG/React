@@ -1,26 +1,64 @@
-import logo from './logo.svg';
-import './App.css';
-import {Massage} from'./components'
+import { useCallback, useState, useRef, useEffect } from "react";
+import "./App.css";
 
 function App() {
+  const [inputValue, setInputValue] = useState("");
+  const [messageList, setMessageList] = useState([]);
+
+  const resetInputValue = useCallback(() => {
+    setInputValue("");
+  }, []);
+
+  const addNewMassage = useCallback((author, text) => {
+    const massage = {
+      author: author,
+      text: text,
+    };
+    setMessageList((prevState) => {
+      return [...prevState, massage];
+    });
+  }, []);
+
+  const init = useRef(false);
+
+  useEffect(() => {
+    if (init.current) {
+      if (messageList[messageList.length - 1].author === "user") {
+        const timerId = setTimeout(() => {
+          addNewMassage("bot", "Hello");
+        }, 1500);
+        return () => {
+          clearTimeout(timerId);
+        };
+      }
+    } else {
+      init.current = true;
+    }
+  }, [messageList]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    addNewMassage("user", inputValue);
+    resetInputValue();
+  };
+
+  const onChangeInput = (event) => {
+    setInputValue(event.target.value);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Massage>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis eveniet enim quaerat a, necessitatibus odio sequi sint quia adipisci quo dicta suscipit beatae asperiores ad ipsa voluptas. Quidem, soluta consequatur!
-          Nobis beatae commodi veniam consectetur magnam temporibus molestiae tempora expedita ut veritatis labore, unde praesentium reprehenderit consequuntur, rem omnis. Animi voluptatibus, in ratione consequuntur unde quas aspernatur praesentium iste veniam.
-          Libero eveniet, voluptas corporis numquam hic esse iusto voluptatum vitae beatae nesciunt aperiam, ullam nemo autem quaerat cumque iste fugiat soluta ducimus repellendus, dolore placeat deserunt! Reiciendis vel reprehenderit possimus.
-        </Massage>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <form onSubmit={handleSubmit}>
+        <input value={inputValue} onChange={onChangeInput} type="text" />
+        <button type="submit"> submit </button>
+      </form>
+      <div>
+        {messageList.map(({ author, text }, index) => (
+          <div key={index}>
+            {author}: {text}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
