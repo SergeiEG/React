@@ -9,7 +9,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { Redirect, useParams } from "react-router-dom";
-import { chatsList } from "../Chats";
+import { chatList } from "../Chats";
 import { getChatsLink } from "../../navigation";
 
 export const Chat = () => {
@@ -45,7 +45,7 @@ export const Chat = () => {
     }
   }, [messageList]);
 
-  if (!chatsList.find((item) => item.id === parseInt(chatId))) {
+  if (!chatList.find((item) => item.id === parseInt(chatId))) {
     return <Redirect to={getChatsLink()} />;
   }
 
@@ -65,7 +65,6 @@ export const Chat = () => {
       sx={{
         display: "flex",
         alignItems: "center",
-        height: "100vh",
       }}
     >
       <Paper

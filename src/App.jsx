@@ -22,8 +22,11 @@ function App() {
       }}
     >
       <Switch>
-        <Route path={getChatsLinkId()} component={Chat} />
-        <Route path={getChatsLink()} component={Chats} />
+        <Route path={getChatsLink()}>
+          <Chats>
+            <Route path={getChatsLinkId()} component={Chat} />
+          </Chats>
+        </Route>
         <Route path={getProfileLink()} component={Profile} />
         <Route exact path={getHomeLink()} component={Home} />
       </Switch>
