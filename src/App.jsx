@@ -10,6 +10,8 @@ import {
 import { Profile } from "./routes/Profile";
 import { Chats } from "./routes/Chats";
 import { Chat } from "./routes/Chat";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 function App() {
   return (
@@ -21,15 +23,17 @@ function App() {
         height: "100vh",
       }}
     >
-      <Switch>
-        <Route path={getChatsLink()}>
-          <Chats>
-            <Route path={getChatsLinkId()} component={Chat} />
-          </Chats>
-        </Route>
-        <Route path={getProfileLink()} component={Profile} />
-        <Route exact path={getHomeLink()} component={Home} />
-      </Switch>
+      <Provider store={store}>
+        <Switch>
+          <Route path={getChatsLink()}>
+            <Chats>
+              <Route path={getChatsLinkId()} component={Chat} />
+            </Chats>
+          </Route>
+          <Route path={getProfileLink()} component={Profile} />
+          <Route exact path={getHomeLink()} component={Home} />
+        </Switch>
+      </Provider>
     </Container>
   );
 }
