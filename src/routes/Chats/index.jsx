@@ -10,32 +10,18 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-
-export let chatList = [];
+import { useDispatch, useSelector } from "react-redux";
+import { addChat, removeChat } from "../../store/chats/action";
+import { getChatsList } from "../../store/chats/selectors";
 
 export const Chats = (props) => {
-  const [chatsList, setChatsList] = useState([
-    { id: 1, name: "первый" },
-    { id: 2, name: "второй" },
-    { id: 3, name: "третий" },
-  ]);
+  const chatList = useSelector(getChatsList);
+  const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState("");
 
-  const onChangeArr = () => {
-    chatList = [];
-    chatList = [...chatsList];
-  };
-  onChangeArr();
-
   const addNewChat = useCallback((text) => {
-    const chat = {
-      id: Date.now(),
-      name: text,
-    };
-    setChatsList((prevState) => {
-      return [...prevState, chat];
-    });
-  }, []);
+    dispatch(addChat(text));
+  });
 
   const [open, setOpen] = useState(false);
 
@@ -61,10 +47,8 @@ export const Chats = (props) => {
     setInputValue(event.target.value);
   };
 
-  const removeChat = (id) => {
-    const removeItem = chatList.findIndex((item) => item.id === id);
-    if (removeItem !== -1) chatList.splice(removeItem, 1);
-    setChatsList(chatList);
+  const handleRemoveChat = (id) => {
+    dispatch(removeChat(id));
   };
 
   return (
@@ -114,7 +98,7 @@ export const Chats = (props) => {
             </DialogActions>
           </Dialog>
         </Box>
-        {chatsList.map((item) => {
+        {chatList.map((item) => {
           return (
             <Box
               key={item.id}
@@ -130,7 +114,7 @@ export const Chats = (props) => {
                 {item.name}
               </Button>
               <IconButton
-                onClick={() => removeChat(item.id)}
+                onClick={() => handleRemoveChat(item.id)}
                 aria-label="delete"
                 size="small"
               >

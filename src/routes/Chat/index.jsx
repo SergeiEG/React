@@ -9,34 +9,37 @@ import {
   ListItemText,
 } from "@mui/material";
 import { Redirect, useParams } from "react-router-dom";
-import { chatList } from "../Chats";
 import { getChatsLink } from "../../navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { addMessage } from "../../store/messages/action";
+import { getMessageListByChatId } from "../../store/messages/selectors";
 
 export const Chat = () => {
   const { chatId } = useParams();
   const [inputValue, setInputValue] = useState("");
-  const [messageList, setMessageList] = useState([]);
+  const messageList = useSelector(getMessageListByChatId(chatId));
+  const chatList = useSelector((state) => state.chats.chatList);
+  const dispatch = useDispatch();
 
   const resetInputValue = useCallback(() => {
     setInputValue("");
   }, []);
 
-  const addNewMassage = useCallback((author, text) => {
-    const massage = {
-      date: Date.now(),
-      author: author,
-      text: text,
-    };
-    setMessageList((prevState) => {
-      return [...prevState, massage];
-    });
-  }, []);
+  const addNewMessage = (author, text) => {
+    dispatch(
+      addMessage(chatId, {
+        id: Date.now(),
+        author: author,
+        text: text,
+      })
+    );
+  };
 
   useEffect(() => {
-    if (messageList.length > 0) {
+    if (messageList !== undefined) {
       if (messageList[messageList.length - 1].author === "user") {
         const timerId = setTimeout(() => {
-          addNewMassage("bot", "Hello");
+          addNewMessage("bot", "Hello");
         }, 1500);
         return () => {
           clearTimeout(timerId);
@@ -51,7 +54,7 @@ export const Chat = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    addNewMassage("user", inputValue);
+    addNewMessage("user", inputValue);
     resetInputValue();
   };
 
@@ -90,8 +93,8 @@ export const Chat = () => {
           </Button>
         </Box>
         <List>
-          {messageList.map(({ author, text, date }) => (
-            <ListItem key={date}>
+          {messageList?.map(({ author, text, id }) => (
+            <ListItem key={id}>
               <ListItemText>
                 {author}: {text}
               </ListItemText>

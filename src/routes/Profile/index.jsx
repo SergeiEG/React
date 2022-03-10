@@ -2,19 +2,15 @@ import { Box } from "@mui/material";
 import { Link } from "react-router-dom";
 import { getHomeLink } from "../../navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { CHANGE_PROFILE_STATUS } from "../../store/Profile/action";
+import { changeProfileStatus } from "../../store/Profile/action";
+import { getProfileStatus } from "../../store/Profile/selectors";
 
 export const Profile = () => {
   const dispatch = useDispatch();
-  const profileStatus = useSelector((state) => state.profile);
+  const profileStatus = useSelector(getProfileStatus);
 
   const changeStatus = () => {
-    dispatch({
-      type: CHANGE_PROFILE_STATUS,
-      payload: {
-        status: !profileStatus,
-      },
-    });
+    dispatch(changeProfileStatus(!profileStatus));
   };
 
   return (
