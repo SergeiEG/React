@@ -12,6 +12,8 @@ import { Chats } from "./routes/Chats";
 import { Chat } from "./routes/Chat";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistor } from "./store/index";
 
 function App() {
   return (
@@ -24,15 +26,17 @@ function App() {
       }}
     >
       <Provider store={store}>
-        <Switch>
-          <Route path={getChatsLink()}>
-            <Chats>
-              <Route path={getChatsLinkId()} component={Chat} />
-            </Chats>
-          </Route>
-          <Route path={getProfileLink()} component={Profile} />
-          <Route exact path={getHomeLink()} component={Home} />
-        </Switch>
+        <PersistGate loading={null} persistor={persistor}>
+          <Switch>
+            <Route path={getChatsLink()}>
+              <Chats>
+                <Route path={getChatsLinkId()} component={Chat} />
+              </Chats>
+            </Route>
+            <Route path={getProfileLink()} component={Profile} />
+            <Route exact path={getHomeLink()} component={Home} />
+          </Switch>
+        </PersistGate>
       </Provider>
     </Container>
   );

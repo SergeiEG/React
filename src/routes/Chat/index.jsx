@@ -1,18 +1,10 @@
-import { useCallback, useState, useEffect } from "react";
-import {
-  Paper,
-  TextField,
-  Button,
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-} from "@mui/material";
+import { useCallback, useState } from "react";
 import { Redirect, useParams } from "react-router-dom";
 import { getChatsLink } from "../../navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessage } from "../../store/messages/action";
+import { addMessageThunk } from "../../store/messages/action";
 import { getMessageListByChatId } from "../../store/messages/selectors";
+import { ChatPre } from "./chatPre";
 
 export const Chat = () => {
   const { chatId } = useParams();
@@ -27,26 +19,13 @@ export const Chat = () => {
 
   const addNewMessage = (author, text) => {
     dispatch(
-      addMessage(chatId, {
+      addMessageThunk(chatId, {
         id: Date.now(),
         author: author,
         text: text,
       })
     );
   };
-
-  useEffect(() => {
-    if (messageList !== undefined) {
-      if (messageList[messageList.length - 1].author === "user") {
-        const timerId = setTimeout(() => {
-          addNewMessage("bot", "Hello");
-        }, 1500);
-        return () => {
-          clearTimeout(timerId);
-        };
-      }
-    }
-  }, [messageList]);
 
   if (!chatList.find((item) => item.id === parseInt(chatId))) {
     return <Redirect to={getChatsLink()} />;
@@ -63,45 +42,11 @@ export const Chat = () => {
   };
 
   return (
-    <Box
-      maxWidth="sm"
-      sx={{
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
-      <Paper
-        elevation={24}
-        sx={{
-          padding: 2,
-          height: "80vh",
-          width: "100%",
-          overflow: "auto",
-        }}
-      >
-        <Box component={"form"} onSubmit={handleSubmit}>
-          <TextField
-            inputRef={(input) => input && input.focus()}
-            label="Text"
-            variant="outlined"
-            value={inputValue}
-            onChange={onChangeInput}
-            size="small"
-          />
-          <Button type="submit" variant="contained">
-            submit
-          </Button>
-        </Box>
-        <List>
-          {messageList?.map(({ author, text, id }) => (
-            <ListItem key={id}>
-              <ListItemText>
-                {author}: {text}
-              </ListItemText>
-            </ListItem>
-          ))}
-        </List>
-      </Paper>
-    </Box>
+    <ChatPre
+      messageList={messageList}
+      handleSubmit={handleSubmit}
+      inputValue={inputValue}
+      onChangeInput={onChangeInput}
+    ></ChatPre>
   );
 };

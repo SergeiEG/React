@@ -1,9 +1,7 @@
-import { Box } from "@mui/material";
-import { Link } from "react-router-dom";
-import { getHomeLink } from "../../navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { changeProfileStatus } from "../../store/Profile/action";
 import { getProfileStatus } from "../../store/Profile/selectors";
+import { ProfilePre } from "./profilePre";
 
 export const Profile = () => {
   const dispatch = useDispatch();
@@ -14,19 +12,9 @@ export const Profile = () => {
   };
 
   return (
-    <Box>
-      <h1>Profile</h1>
-      <div>
-        <label>
-          Status:
-          <input
-            onChange={changeStatus}
-            checked={profileStatus}
-            type="checkbox"
-          />
-        </label>
-      </div>
-      <Link to={getHomeLink()}>Home</Link>
-    </Box>
+    <ProfilePre
+      changeStatus={changeStatus}
+      profileStatus={profileStatus}
+    ></ProfilePre>
   );
 };
