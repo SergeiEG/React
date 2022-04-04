@@ -6,6 +6,8 @@ import {
   ListItemText,
   CircularProgress,
 } from "@mui/material";
+import { Link } from "react-router-dom";
+import { getHomeLink } from "../../navigation";
 
 export const CatsPre = ({ catsFacts, isLoading, error, requestCatFacts }) => {
   return (
@@ -26,6 +28,7 @@ export const CatsPre = ({ catsFacts, isLoading, error, requestCatFacts }) => {
           </ListItem>
         ))}
       </List>
+      <Link to={getHomeLink()}>Home</Link>
     </Box>
   );
 };
