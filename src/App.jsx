@@ -6,10 +6,12 @@ import {
   getProfileLink,
   getChatsLink,
   getChatsLinkId,
+  getCatsLink,
 } from "./navigation";
 import { Profile } from "./routes/Profile";
 import { Chats } from "./routes/Chats";
 import { Chat } from "./routes/Chat";
+import { Cats } from "./routes/Cats";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { PersistGate } from "redux-persist/integration/react";
@@ -33,6 +35,7 @@ function App() {
                 <Route path={getChatsLinkId()} component={Chat} />
               </Chats>
             </Route>
+            <Route path={getCatsLink()} component={Cats} />
             <Route path={getProfileLink()} component={Profile} />
             <Route exact path={getHomeLink()} component={Home} />
           </Switch>

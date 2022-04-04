@@ -6,3 +6,5 @@ export const getChatsLink = () => ["", "chats"].join("/");
 
 export const getChatsLinkId = (chatId = ":chatId") =>
   [getChatsLink(), chatId].join("/");
+
+export const getCatsLink = () => ["", "cats"].join("/");
