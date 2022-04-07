@@ -1,8 +1,11 @@
-import { useCallback, useState } from "react";
-import { Redirect, useParams } from "react-router-dom";
-import { getChatsLink } from "../../navigation";
+import { useCallback, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessageThunk } from "../../store/messages/action";
+import {
+  addMessageThunk,
+  addMessageOffTracker,
+  addMessageTracker,
+} from "../../store/messages/action";
 import { getMessageListByChatId } from "../../store/messages/selectors";
 import { ChatPre } from "./chatPre";
 
@@ -10,8 +13,14 @@ export const Chat = () => {
   const { chatId } = useParams();
   const [inputValue, setInputValue] = useState("");
   const messageList = useSelector(getMessageListByChatId(chatId));
-  const chatList = useSelector((state) => state.chats.chatList);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(addMessageTracker(chatId));
+    return () => {
+      dispatch(addMessageOffTracker(chatId));
+    };
+  }, [chatId]);
 
   const resetInputValue = useCallback(() => {
     setInputValue("");
@@ -20,16 +29,11 @@ export const Chat = () => {
   const addNewMessage = (author, text) => {
     dispatch(
       addMessageThunk(chatId, {
-        id: Date.now(),
         author: author,
         text: text,
       })
     );
   };
-
-  if (!chatList.find((item) => item.id === parseInt(chatId))) {
-    return <Redirect to={getChatsLink()} />;
-  }
 
   const handleSubmit = (event) => {
     event.preventDefault();

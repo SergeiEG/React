@@ -1,7 +1,13 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
-import { getChatsLink, getProfileLink, getCatsLink } from "../../navigation";
+import {
+  getChatsLink,
+  getProfileLink,
+  getCatsLink,
+  getSingupLink,
+  getLoginLink,
+} from "../../navigation";
 
 export const Home = () => {
   return (
@@ -15,6 +21,12 @@ export const Home = () => {
       </div>
       <div>
         <Link to={getCatsLink()}>Fact of cats</Link>
+      </div>
+      <div>
+        <Link to={getSingupLink()}>Sing up</Link>
+      </div>
+      <div>
+        <Link to={getLoginLink()}>Login</Link>
       </div>
     </Box>
   );

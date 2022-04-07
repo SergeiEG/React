@@ -1,4 +1,4 @@
-import { ADD_MESSAGE } from "./action";
+import { ADD_MESSAGE, RESET_MESSAGE_LIST } from "./action";
 
 const initialState = {
   messageList: {},
@@ -14,6 +14,15 @@ export const messageReducer = (state = initialState, action) => {
           ...state.messageList,
           [chatId]: [...(state.messageList[chatId] || []), message],
         },
+      };
+    }
+    case RESET_MESSAGE_LIST: {
+      const copyMessageList = { ...state.messageList };
+      delete copyMessageList[action.payload];
+
+      return {
+        ...state,
+        messageList: copyMessageList,
       };
     }
     default:

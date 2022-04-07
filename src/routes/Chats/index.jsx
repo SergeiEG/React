@@ -1,6 +1,13 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addChat, removeChat } from "../../store/chats/action";
+import {
+  addChatsTracker,
+  removeChatTracker,
+  removeChatsOffTracker,
+  addChatsOffTracker,
+  addChatToFirebase,
+  removeChatToFirebase,
+} from "../../store/chats/action";
 import { getChatsList } from "../../store/chats/selectors";
 import { ChatsPre } from "./chatsPre";
 
@@ -9,8 +16,18 @@ export const Chats = ({ children }) => {
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState("");
 
+  useEffect(() => {
+    dispatch(addChatsTracker);
+    dispatch(removeChatTracker);
+
+    return () => {
+      dispatch(removeChatsOffTracker);
+      dispatch(addChatsOffTracker);
+    };
+  }, []);
+
   const addNewChat = useCallback((text) => {
-    dispatch(addChat(text));
+    dispatch(addChatToFirebase(text));
   });
 
   const [open, setOpen] = useState(false);
@@ -38,7 +55,7 @@ export const Chats = ({ children }) => {
   };
 
   const handleRemoveChat = (id) => {
-    dispatch(removeChat(id));
+    dispatch(removeChatToFirebase(id));
   };
 
   return (

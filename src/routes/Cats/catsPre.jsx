@@ -2,7 +2,6 @@ import {
   Button,
   Box,
   List,
-  ListItem,
   ListItemText,
   CircularProgress,
 } from "@mui/material";
@@ -22,11 +21,7 @@ export const CatsPre = ({ catsFacts, isLoading, error, requestCatFacts }) => {
         </div>
       )}
       <List>
-        {catsFacts?.map((item) => (
-          <ListItem key={item._id}>
-            <ListItemText>{item.text}</ListItemText>
-          </ListItem>
-        ))}
+        <ListItemText>{catsFacts.text}</ListItemText>
       </List>
       <Link to={getHomeLink()}>Home</Link>
     </Box>
