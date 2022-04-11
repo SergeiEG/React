@@ -1,11 +1,11 @@
 import { ADD_CHAT, REMOVE_CHAT, RESET_CHAT } from "./action";
 
-const initialState = {
+export const initialState = {
   chatList: [],
 };
 
 export const chatsReducer = (state = initialState, action) => {
-  switch (action.type) {
+  switch (action?.type) {
     case ADD_CHAT: {
       return {
         ...state,

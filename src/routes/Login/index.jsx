@@ -6,6 +6,8 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const login = (email, password) =>
+    auth.signInWithEmailAndPassword(email, password);
 
   const handlePassChange = (e) => {
     setPassword(e.target.value);
@@ -17,7 +19,7 @@ export const Login = () => {
     e.preventDefault();
     setError("");
     try {
-      await auth.signInWithEmailAndPassword(email, password);
+      await login(email, password);
     } catch (error) {
       setError(error.message);
     }

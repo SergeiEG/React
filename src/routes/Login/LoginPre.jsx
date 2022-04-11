@@ -21,8 +21,8 @@ export const LoginPre = ({
     >
       <p>Fill in the form below to login to your account.</p>
       <TextField
-        required
         id="outlined-required"
+        inputProps={{ "data-testid": "content-input" }}
         label="Email"
         onChange={handleEmailChange}
       />
@@ -34,7 +34,7 @@ export const LoginPre = ({
         onChange={handlePassChange}
       />
       {error && <p>{error}</p>}
-      <Button type="submit" variant="contained">
+      <Button data-testid="submitBtn" type="submit" variant="contained">
         Login
       </Button>
       <hr />

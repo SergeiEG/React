@@ -6,6 +6,8 @@ export const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const signup = (email, password) =>
+    auth.createUserWithEmailAndPassword(email, password);
 
   const handlePassChange = (e) => {
     setPassword(e.target.value);
@@ -17,7 +19,7 @@ export const Signup = () => {
     e.preventDefault();
     setError("");
     try {
-      await auth.createUserWithEmailAndPassword(email, password);
+      await signup(email, password);
     } catch (error) {
       setError(error.message);
     }

@@ -10,6 +10,7 @@ export const ProfilePre = ({ changeStatus, profileStatus }) => {
         <label>
           Status:
           <input
+            data-testid="inputTextId"
             onChange={changeStatus}
             checked={profileStatus}
             type="checkbox"
