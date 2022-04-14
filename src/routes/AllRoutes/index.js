@@ -58,7 +58,7 @@ export const AllRoutes = () => {
           path={getLoginLink()}
           component={Login}
         />
-        <PrivateRoute
+        <PublicRoute
           authenticated={isAuth}
           path={getProfileLink()}
           component={Profile}
